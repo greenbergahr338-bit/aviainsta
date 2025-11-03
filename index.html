@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>АВИАМАСТЕРС ИГРА</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;}
+
+    body {
+      font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+      background:linear-gradient(135deg,#0f0f23 0%,#1a1a2e 25%,#16213e 50%,#0f3460 75%,#533483 100%);
+      min-height:100vh;
+      color:#fff;
+      text-align:center;
+      padding:40px 20px;
+      overflow-x:hidden;
+    }
+
+    body::before {
+      content:'';
+      position:fixed;
+      top:0;left:0;width:100%;height:100%;
+      background:
+        radial-gradient(circle at 20% 80%,rgba(120,119,198,0.3) 0%,transparent 50%),
+        radial-gradient(circle at 80% 20%,rgba(255,119,198,0.15) 0%,transparent 50%),
+        radial-gradient(circle at 40% 40%,rgba(120,219,255,0.1) 0%,transparent 50%);
+      pointer-events:none;z-index:-1;
+    }
+
+    .container {max-width:480px;margin:0 auto;position:relative;z-index:1;}
+
+    .avatar {
+      width:140px;height:140px;border-radius:50%;
+      object-fit:cover;
+      border:4px solid rgba(255,255,255,0.2);
+      box-shadow:0 20px 40px rgba(0,0,0,0.4);
+      margin-bottom:30px;
+    }
+
+    h1,h2 {
+      font-family:"Playfair Display",serif;
+      font-weight:600;
+      line-height:1.2;
+      text-shadow:0 2px 4px rgba(0,0,0,0.3);
+      margin-bottom:12px;
+    }
+
+    h1 {
+      font-size:clamp(28px,5vw,36px);
+      background:linear-gradient(135deg,#fff 0%,#f8f9ff 50%,#e8e9ff 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+
+    h2 {
+      font-size:clamp(28px,5vw,36px);
+      background:linear-gradient(135deg,#db3636 0%,#fff8f8 50%,#e8e9ff 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+
+    .links-container {
+      display:flex;flex-direction:column;gap:16px;align-items:center;
+      margin-top:10px;margin-bottom:26px;
+    }
+
+    .link {
+      display:flex;align-items:center;justify-content:flex-start;
+      width:100%;max-width:380px;
+      padding:18px 22px;
+      border-radius:16px;
+      text-decoration:none;
+      font-size:18px;font-weight:700;
+      color:#fff;position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+
+    .link-icon {
+      width:40px;height:40px;border-radius:50%;object-fit:cover;
+      margin-right:14px;border:2px solid rgba(255,255,255,0.3);
+      box-shadow:0 4px 12px rgba(0,0,0,0.3);
+      background:#00000033;
+    }
+
+    /* Градиенты для трёх верхних кнопок */
+    .top-links .link:nth-child(1){
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      box-shadow:0 16px 36px rgba(102,126,234,0.4);
+    }
+    .top-links .link:nth-child(2){
+      background:linear-gradient(135deg,#6ee7f0 0%,#3b82f6 100%);
+      box-shadow:0 16px 36px rgba(59,130,246,0.35);
+    }
+    .top-links .link:nth-child(3){
+      background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);
+      box-shadow:0 16px 36px rgba(240,147,251,0.35);
+    }
+
+    /* Кнопки внизу больше не используются, но оставим универсальный стиль на будущее */
+    .bottom-links .link:nth-child(1){
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      box-shadow:0 15px 35px rgba(102,126,234,0.4);
+    }
+    .bottom-links .link:nth-child(2){
+      background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);
+      box-shadow:0 15px 35px rgba(240,147,251,0.4);
+    }
+
+    @media(max-width:480px){
+      body{padding:30px 15px;}
+      .avatar{width:120px;height:120px;}
+      .link{max-width:100%;padding:16px 18px;font-size:16px;}
+    }
+
+    /* Убираем остатки анимаций */
+    *,*::before,*::after{animation:none!important;transition:none!important;}
+  </style>
+</head>
+<body>
+
+<div id="lb-topbar" style="position:fixed;top:0;left:0;right:0;z-index:9999">
+  <div style="max-width:980px;margin:10px auto 0;display:flex;gap:10px;justify-content:space-between;align-items:center;padding:6px 10px">
+    <a href="#vpn-download"
+       style="padding:10px 14px;border-radius:12px;font-weight:700;font-size:14px;
+              background:linear-gradient(90deg,#6e45e2,#ff6fa3);color:#fff;text-decoration:none;">
+      📲 Скачать VPN
+    </a>
+    <a href="https://luckybear.vip/0swWXy" target="_blank" rel="noopener"
+       style="padding:10px 14px;border-radius:12px;font-weight:800;font-size:14px;
+              background:linear-gradient(90deg,#fbbf24,#fb923c);color:#08101a;text-decoration:none;">
+      🎮 Играть на сайте
+    </a>
+  </div>
+</div>
+
+<div class="container">
+  <img src="image/nekit.png" alt="Avatar" class="avatar">
+
+  <div class="new-section">
+    <h2>ВКЛЮЧАЙ VPN ПРИ ЗАХОДЕ !</h2>
+
+    <!-- Перенесённые вверх кнопки + добавлена кнопка "Играть в ТГ" в таком же стиле -->
+    <div class="links-container top-links">
+      <a class="link" href="https://luckybear.vip/0swWXy" target="_blank" rel="noopener">
+        <img src="image/avia.webp" alt="Aviamasters" class="link-icon">
+        <div class="link-content">Aviamasters — Играть на сайте</div>
+      </a>
+
+      <a class="link" href="https://t.me/Lucky_Bear_CashWin_bot/app?startapp=bXN0PTB4MWJlODE2NDg4Jm09SUdPUlImYz1ib3RZVA" target="_blank" rel="noopener">
+        <img src="image/avia.webp" alt="Aviamasters TG" class="link-icon">
+        <div class="link-content">Aviamasters — Играть в ТГ</div>
+      </a>
+
+      <a class="link" href="https://t.me/berlogalb" target="_blank" rel="noopener">
+        <img src="image/nekit.png" alt="Telegram" class="link-icon">
+        <div class="link-content">TG канал — Вся инфа по LuckyBear</div>
+      </a>
+    </div>
+  </div>
+
+  <h1>ЗАХОДИТЬ С VPN</h1>
+  <h2>НЕТ VPN? КАЧАЙ НИЖЕ</h2>
+</div>
+
+<!-- Блок скачивания VPN -->
+<div id="vpn-download" style="margin-top:24px; text-align:center">
+  <h3 style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:16px;color:#fff">
+    Если у тебя нет VPN — скачай ProtonVPN по кнопкам ниже:
+  </h3>
+
+  <a href="https://play.google.com/store/apps/details?id=ch.protonvpn.android" target="_blank" style="display:inline-block;margin:6px">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" style="width:160px;border-radius:10px">
+  </a>
+
+  <a href="https://apps.apple.com/app/proton-vpn-fast-secure/id1437005085" target="_blank" style="display:inline-block;margin:6px">
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" style="width:150px;border-radius:10px">
+  </a>
+</div>
+  
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=104709922', 'ym');
+
+    ym(104709922, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/104709922" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>
