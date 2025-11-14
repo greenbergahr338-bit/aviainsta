@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVIONIX</title>
+
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:"Inter",sans-serif;
+    min-height:100vh;
+
+    /* ✔ Глубокий синий фон */
+    background: radial-gradient(circle at center, #07224a 0%, #021123 100%);
+    color:#fff;
+    overflow:hidden;
+    position:relative;
+  }
+
+  /* ———————————— СЕТКА В БЕЛО-СИНИХ ТОНАХ ———————————— */
+  .grid-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    z-index: -1;
+    opacity: 0.11;
+    transition: transform 0.1s ease;
+  }
+
+  .grid1 {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.20) 0 1px, transparent 1px 160px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.20) 0 1px, transparent 1px 160px);
+    filter: blur(4px);
+  }
+
+  .grid2 {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(140,180,255,0.20) 0 1px, transparent 1px 210px),
+      repeating-linear-gradient(90deg, rgba(140,180,255,0.20) 0 1px, transparent 1px 210px);
+    filter: blur(5px);
+  }
+
+  .grid3 {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(200,220,255,0.15) 0 1px, transparent 1px 260px),
+      repeating-linear-gradient(90deg, rgba(200,220,255,0.15) 0 1px, transparent 1px 260px);
+    filter: blur(6px);
+  }
+
+  /* ———————————— HEADER ———————————— */
+  header {
+    position: fixed;
+    top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 10;
+    opacity: 0;
+    animation: fadeIn 1s forwards .4s;
+  }
+
+  .tg-btn {
+    padding: 12px 30px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 50px;
+
+    /* ✔ Белая обводка */
+    border: 1px solid rgba(255,255,255,0.8);
+
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+    transition: .25s;
+  }
+
+  .tg-btn:hover {
+    background:#4f8cff;
+    box-shadow:0 0 20px rgba(120,160,255,.8);
+    transform:translateY(-3px);
+  }
+
+  /* ———————————— MAIN ———————————— */
+  main {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    z-index: 3;
+    opacity: 0;
+    animation: fadeIn 1s forwards 1s;
+  }
+
+  .logo {
+    width:170px;
+    height:170px;
+    border-radius:50%;
+
+    /* ✔ Белая обводка под стиль */
+    border:2px solid rgba(255,255,255,0.85);
+
+    box-shadow:0 0 20px rgba(120,160,255,.4);
+    object-fit:cover;
+    margin-bottom:20px;
+  }
+
+  .tg-info {
+    font-size:18px;
+    opacity:0.85;
+    margin-bottom:25px;
+  }
+
+  h1 {
+    font-size:clamp(36px,7vw,60px);
+    font-weight:800;
+    margin-bottom:40px;
+    letter-spacing:2px;
+    color:#fff;
+
+    /* ✔ Бело-голубое свечение */
+    text-shadow:0 0 15px rgba(150,180,255,.65);
+  }
+
+  /* ———————————— КНОПКИ ———————————— */
+  .btn-container {
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    width:100%;
+    max-width:360px;
+  }
+
+  .game-btn {
+    padding:18px 28px;
+    text-decoration:none;
+    color:#fff;
+    font-size:18px;
+    font-weight:600;
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.8); /* ✔ Белая обводка */
+    border-radius:14px;
+    transition:.3s;
+    opacity:0;
+    animation:fadeInUp .8s forwards;
+  }
+
+  .game-btn:hover {
+    background:#4f8cff;
+    box-shadow:0 0 25px rgba(120,160,255,.8);
+    transform:translateY(-4px);
+  }
+
+  /* ———————————— VPN ———————————— */
+  .vpn-note {
+    margin-top:25px;
+    font-size:18px;
+    opacity:.85;
+  }
+
+  .vpn-btn {
+    display:inline-block;
+    margin-top:15px;
+    padding:16px 28px;
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.8); /* ✔ Белая обводка */
+    border-radius:14px;
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+    text-decoration:none;
+
+    transition:.3s;
+    opacity:0;
+    animation:fadeInUp .8s forwards 2s;
+  }
+
+  .vpn-btn:hover {
+    background:#4f8cff;
+    box-shadow:0 0 25px rgba(120,160,255,.8);
+    transform:translateY(-4px);
+  }
+
+  /* ———————————— ANIM ———————————— */
+  @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+  @keyframes fadeInUp {
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1;}
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ✔ Синий фон + сетка -->
+<div class="grid-layer grid1" id="grid1"></div>
+<div class="grid-layer grid2" id="grid2"></div>
+<div class="grid-layer grid3" id="grid3"></div>
+
+<header>
+  <a href="https://t.me/+w4i8TJbuJIEzZDFi" class="tg-btn">Мой ТГК</a>
+  <a href="https://t.me/+w4i8TJbuJIEzZDFi" class="tg-btn">Мой ТГК</a>
+</header>
+
+<main>
+  <img src="igor.png" class="logo">
+  <div class="tg-info">НЕ РАБОТАЮТ ИГРЫ? ВКЛЮЧИ VPN</div>
+
+  <h1>AVIONIX</h1>
+
+  <div class="btn-container">
+    <a href="https://t.me/+w4i8TJbuJIEzZDFi" class="game-btn">💸 Telegram - розыгрыши,бонусы,игры</a>
+    <a href="https://t.me/+w4i8TJbuJIEzZDFi" class="game-btn">✅ ИГРЫ ЗДЕСЬ В ТГ</a>
+  </div>
+
+  <div class="vpn-note">Если не работает — включай VPN</div>
+  <a href="https://t.me/hitvpnbot?start=1410148627402396" class="vpn-btn">Включить VPN</a>
+</main>
+
+<script>
+/* Параллакс */
+const layers = [
+  {el: document.getElementById('grid1'), factor: 1},
+  {el: document.getElementById('grid2'), factor: 2},
+  {el: document.getElementById('grid3'), factor: 3}
+];
+
+window.addEventListener('mousemove', e => {
+  const x = (e.clientX / innerWidth - 0.5);
+  const y = (e.clientY / innerHeight - 0.5);
+  layers.forEach(layer => {
+    layer.el.style.transform = `translate(${x*30*layer.factor}px, ${y*30*layer.factor}px)`;
+  });
+});
+</script>
+
+</body>
+</html>
