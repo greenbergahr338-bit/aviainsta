@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVIONIX</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:"Inter",sans-serif;
+    min-height:100vh;
+    overflow:hidden;
+    color:#fff;
+    background:#001a0f;
+    position:relative;
+  }
+
+  /* Слои сетки для 3D параллакса */
+  .grid-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    transition: transform 0.1s ease;
+    z-index: -1;
+  }
+
+  .grid1 {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,255,120,0.08) 0 2px, transparent 2px 150px),
+      repeating-linear-gradient(90deg, rgba(0,255,120,0.08) 0 2px, transparent 2px 150px);
+    filter: blur(10px);
+    box-shadow:0 0 20px rgba(0,255,120,0.2);
+  }
+
+  .grid2 {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,255,120,0.06) 0 1px, transparent 1px 200px),
+      repeating-linear-gradient(90deg, rgba(0,255,120,0.06) 0 1px, transparent 1px 200px);
+    filter: blur(15px);
+    box-shadow:0 0 30px rgba(0,255,120,0.15);
+  }
+
+  .grid3 {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,255,120,0.04) 0 1px, transparent 1px 250px),
+      repeating-linear-gradient(90deg, rgba(0,255,120,0.04) 0 1px, transparent 1px 250px);
+    filter: blur(20px);
+    box-shadow:0 0 40px rgba(0,255,120,0.1);
+  }
+
+  header {
+    position: fixed;
+    top: 20px;
+    width: 100%;
+    display:flex;
+    justify-content:space-between;
+    padding:0 20px;
+    z-index:10;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+    animation-delay: 0.5s;
+  }
+
+  .tg-btn {
+    color:#fff;
+    text-decoration:none;
+    padding:12px 24px;
+    border:1px solid #fff;
+    border-radius:30px;
+    font-weight:600;
+    transition:0.3s;
+  }
+
+  .tg-btn:hover { background:rgba(255,255,255,0.1); }
+
+  main {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    height:100vh;
+    position:relative;
+    z-index:2;
+    padding:20px;
+    opacity:0;
+    animation: fadeIn 1s forwards;
+    animation-delay:1s;
+  }
+
+  .logo {
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    border:2px solid #fff;
+    object-fit:cover;
+    margin-bottom:15px;
+  }
+
+  .tg-info {
+    font-weight:bold;
+    font-size:18px;
+    color:#fff;
+    margin-bottom:40px;
+  }
+
+  h1 {
+    font-size:clamp(32px,7vw,56px);
+    text-transform:uppercase;
+    margin-bottom:50px;
+    letter-spacing:2px;
+  }
+
+  .btn-container {
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+    width:100%;
+    max-width:360px;
+  }
+
+  .game-btn {
+    text-align:center;
+    padding:16px 28px;
+    border-radius:12px;
+    border:1px solid #fff;
+    color:#fff;
+    background:rgba(255,255,255,0.05);
+    text-decoration:none;
+    font-weight:500;
+    font-size:18px;
+    transition:all 0.3s ease, box-shadow 0.3s ease;
+    opacity:0;
+    animation: fadeInUp 0.8s forwards;
+  }
+
+  .game-btn:hover {
+    background:rgba(255,255,255,0.15);
+    box-shadow:0 0 25px rgba(0,255,120,0.7);
+    transform:translateY(-3px);
+  }
+
+  .game-btn:nth-child(1) { animation-delay:1.2s; }
+  .game-btn:nth-child(2) { animation-delay:1.4s; }
+  .game-btn:nth-child(3) { animation-delay:1.6s; }
+  .game-btn:nth-child(4) { animation-delay:1.8s; }
+
+  .vpn-note {
+    margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+    color:#fff;
+  }
+
+  .vpn-btn {
+    display:inline-block;
+    margin-top:15px;
+    padding:14px 28px;
+    border:1px solid #fff;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:bold;
+    font-size:18px;
+    color:#fff;
+    background:rgba(255,255,255,0.05);
+    transition:all 0.3s ease, box-shadow 0.3s ease;
+    opacity:0;
+    animation: fadeInUp 0.8s forwards;
+    animation-delay:2.2s;
+  }
+
+  .vpn-btn:hover {
+    background:rgba(255,255,255,0.15);
+    box-shadow:0 0 25px rgba(0,255,120,0.7);
+    transform:translateY(-3px);
+  }
+
+  @keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
+  }
+
+  @keyframes fadeInUp {
+    from {opacity:0; transform:translateY(25px);}
+    to {opacity:1; transform:translateY(0);}
+  }
+
+  @media(max-width:480px){
+    header { top:15px; padding:0 10px; flex-wrap:wrap; justify-content:space-between; }
+    .tg-btn { margin:5px; }
+    .logo { width:120px; height:120px; margin-bottom:10px; }
+    .tg-info { font-size:16px; margin-bottom:30px; }
+    h1 { font-size:28px; margin-bottom:30px; }
+    .game-btn { font-size:16px; padding:14px 20px; }
+    .vpn-note, .vpn-btn { font-size:16px; margin-top:10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Слои сетки -->
+<div class="grid-layer grid1" id="grid1"></div>
+<div class="grid-layer grid2" id="grid2"></div>
+<div class="grid-layer grid3" id="grid3"></div>
+
+<header>
+  <a href="https://t.me/+w4i8TJbuJIEzZDFi" class="tg-btn" target="_blank">Мой ТГК</a>
+  <a href="https://t.me/+w4i8TJbuJIEzZDFi" class="tg-btn" target="_blank">Мой ТГК</a>
+</header>
+
+<main>
+  <img src="igor.png" alt="Logo" class="logo">
+  <div class="tg-info">НЕ РАБОТАЮТ ИГРЫ? ВКЛЮЧИ VPN</div>
+  <h1>AVIONIX</h1>
+  <div class="btn-container">
+    <a href="https://t.me/+w4i8TJbuJIEzZDFi" class="game-btn" target="_blank">💸 Telegram - розыгрыши,бонусы,игры</a>
+    <a href="https://t.me/+w4i8TJbuJIEzZDFi" class="game-btn" target="_blank">✅ ИГРЫ ЗДЕСЬ В ТГ </a>
+  </div>
+  <div class="vpn-note">Если не работает — включай VPN</div>
+  <a href="https://t.me/hitvpnbot?start=1410148627402396" class="vpn-btn" target="_blank">Включить VPN</a>
+</main>
+
+<script>
+const layers = [
+  {el: document.getElementById('grid1'), factor: 1},
+  {el: document.getElementById('grid2'), factor: 2},
+  {el: document.getElementById('grid3'), factor: 3}
+];
+
+window.addEventListener('mousemove', e => {
+  const x = (e.clientX / window.innerWidth - 0.5);
+  const y = (e.clientY / window.innerHeight - 0.5);
+  layers.forEach(layer => {
+    const moveX = x * 30 * layer.factor;
+    const moveY = y * 30 * layer.factor;
+    layer.el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+  });
+});
+
+if(/Mobi|Android/i.test(navigator.userAgent)){
+  layers.forEach(layer => layer.el.style.transform = 'translate(0,0)');
+}
+</script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=104800930', 'ym');
+
+    ym(104800930, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/104800930" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+</body>
+</html>
+
+
+
+
